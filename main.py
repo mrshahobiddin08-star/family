@@ -1,21 +1,41 @@
 import streamlit as st
 
-# Sayt sarlavhasi va sozlamalari
-st.set_page_config(page_title="Bizning Baxtli Oilamiz", page_icon="👨‍👩‍👧‍👦", layout="centered")
+# Sahifa sozlamalari
+st.set_page_config(page_title="Hamroqulovlar Oilasi", page_icon="❤️", layout="centered")
 
-# Bosh sahifa matnlari
-st.title("👨‍👩‍👧‍👦 Bizning Baxtli Oilamizga Xush Kelibsiz!")
-st.write("Bu bizning internetdagi ilk oilaviy rasmiy saytimiz!")
+# Sayt sarlavhasi
+st.title("👨‍👩‍👧‍👦 Hamroqulovlar Oilasining Rasmiy Sahifasi")
+st.write("---")
 
-st.header("❤️ Bizning maqsadimiz")
-st.write("Bir-birimizni qo'llab-quvvatlash, hamisha birga bo'lish va baxtli xotiralarni jamlash.")
+# Men haqimda bo'limi
+st.header("👤 Men Haqimda")
+st.subheader("Ismim: Shahobiddin | Familiyam: Hamroqulov")
+st.markdown("🎯 **Kelajakdagi maqsadim:** Nasib bo'lsa, bo'lajak kuchli **iqtisodchi** hamda **dasturchiman (programmist)**.")
 
-# Aloqa yoki tilaklar bo'limi
-st.subheader("✍️ Oilamizga o'z tilaklaringizni yozib qoldiring:")
-user_wish = st.text_input("Sizning ismingiz va tilagingiz:")
+st.write("---")
 
-if st.button("Yuborish"):
-    if user_wish:
-        st.success(f"Rahmat! Sizning tilagingiz qabul qilindi: '{user_wish}'")
-    else:
-        st.warning("Iltimos, avval tilakni yozing.")  
+# Hayotiy maqsadlar va niyatlar
+st.header("🌟 Eng Ustuvor Maqsadlarim")
+st.markdown("""
+* ✨ **Ideal farzand bo'lish:** Ota-onam xohlaydigan, ularning yuzini yorug' qiladigan farzand bo'lish.
+* 🕋 **Muqaddas safarlar:** Ota-onamni go'zal amallar bilan **Umra va farz amali bo'lmish Haj safarlariga** jo'natish.
+* 🇺🇿 **Vatan ravnaqi:** Yurtimiz va jonajon Vatanimiz uchun har tomonlama munosib, foydali farzand bo'lish.
+""")
+
+st.write("---")
+
+# Dadam va Onamga maktub (Eng muhim qismi)
+st.header("❤️ Ota-onamga Tiz Cho'kib Rahmat va Va'dam!")
+
+st.markdown("""
+> ### 👨 Dadamga cheksiz rahmat:
+> *"Dada, bu yerga yozishni xohlagan eng katta narsam — sizga rahmat aytish. Chunki siz bo'lmaganingizda, men hatto dunyoga kelmasdim, bu darajalarga erishish haqida-ku gapirmasa ham bo'ladi..."*
+""")
+
+st.markdown("""
+> ### 💌 Ota-onamga va'dam:
+> *"Dada, Onajon, buni o'qiysizlar, bilaman. Sizlarga va'da berib aytamanki, kelajakda men uchun chekkan barcha azoblaringiz, mashaqqatlaringiz uchun **sizlarni dunyodagi eng baxtli ota-ona qilaman!**"*
+""")
+
+st.write("---")
+st.info("✍️ Oilamiz sahifasiga tashrif buyurganingiz uchun rahmat!")
