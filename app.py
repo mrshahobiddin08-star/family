@@ -69,20 +69,28 @@ if st.button("Murojaatni Rasman Yuborish 🚀"):
         st.error("❌ Iltimos, barcha maydonlarni to'liq to'ldiring!")
     else:
         with st.spinner("Yuborilmoqda..."):
-            # Ma'lumotni 100% kafolatli saqlash
             save_data(f_name, f_phone, f_type, f_text)
             st.balloons()
             st.success("✅ Murojaatingiz muvaffaqiyatli qabul qilindi va mahalla onlayn bazasiga rasman kiritildi!")
 
-# 📊 KELIB TUSHGAN ARIZALARNI ARIZA EGASI KO'RISHI UCHUN PANELI
+# 🔐 MASOFAVIY ADMIN PANEL (FAQAT PAROL BILAN OCHILADI)
 st.write("")
 st.divider()
-with st.expander("📊 Kelib tushgan onlayn murojaatlar ro'yxati (Baza)"):
-    if os.path.exists("murojaatlar_baza.csv"):
-        df = pd.read_csv("murojaatlar_baza.csv", encoding='utf-8')
-        st.dataframe(df, use_container_width=True)
-    else:
-        st.info("Hozircha onlayn murojaatlar mavjud emas. Birinchi bo'lib arizani yuboring!")
+
+with st.expander("🔐 Mas'ul shaxslar (Admin) kirish bo'limi"):
+    st.write("Kelib tushgan murojaatlar ro'yxatini ko'rish uchun maxfiy parolni kiriting:")
+    admin_password = st.text_input("Admin Paroli:", type="password", placeholder="••••", key="admin_pwd")
+    
+    # 🌟 PAROL SHAXSAN REJANGIZDAGIDEK "1004" GA O'ZGARTIRILDI 🌟
+    if admin_password == "1004":
+        st.success("🔓 Kirish muvaffaqiyatli yuklandi. Xush kelibsiz, Shahobiddin!")
+        if os.path.exists("murojaatlar_baza.csv"):
+            df = pd.read_csv("murojaatlar_baza.csv", encoding='utf-8')
+            st.dataframe(df, use_container_width=True)
+        else:
+            st.info("Hozircha onlayn murojaatlar mavjud emas.")
+    elif admin_password != "":
+        st.error("❌ Maxfiy parol noto'g'ri! Kirish rad etildi.")
 
 # 📣 REKLAMA PANEL
 st.markdown("""
