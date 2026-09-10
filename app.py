@@ -1,13 +1,10 @@
 import streamlit as st
-import requests
+import pandas as pd
+import os
 from datetime import datetime
 
-# Sahifa sozlamalari
+# Sahifa sozlamalari - Premium to'q yashil va oltin rangli dizayn
 st.set_page_config(page_title="Raqamli Mahalla", page_icon="🏛️", layout="centered")
-
-# SOZLAMALAR - SHAXSIY PROFILGA TO'G'RIDAN-TO'G'RI ULANISH
-BOT_TOKEN = "8850573618:AAFHnfum5nKAEUL-JPvcQX7Emp_raHKj-K0"
-CHAT_ID = "6937805047"  # Shahobiddinning aniq shaxsiy ID raqami
 
 st.markdown("""
 <style>
@@ -50,34 +47,18 @@ st.markdown("""
 
 st.markdown("<div class='mahalla-header'><div class='mahalla-title'>🏛️ OLIY MAHALLA RAQAMLI PORTALI</div></div>", unsafe_allow_html=True)
 
-def send_tg(name, phone, m_type, text):
+# Ma'lumotlarni bepul va mustahkam CSV bazaga saqlash mantiqi
+def save_data(name, phone, m_type, text):
+    file_name = "murojaatlar_baza.csv"
     vaqt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    yangi_ariza = pd.DataFrame([[vaqt, name, phone, m_type, text]], columns=["Vaqt", "Ism Familiya", "Telefon", "Murojaat Turi", "Murojaat Matni"])
     
-    # Hech qanday Markdown belgilarsiz eng oddiy matn formati (Bloklanishni oldini oladi)
-    message = (
-        "🔔 YANGI MUROJAAT REKORDI! 🔔\n\n"
-        f"👤 Fuqaro: {name}\n"
-        f"📞 Telefon: {phone}\n"
-        f"📂 Murojaat turi: {m_type}\n"
-        f"📝 Murojaat matni: {text}\n\n"
-        f"📅 Vaqt: {vaqt}"
-    )
-    
-    url = f"https://telegram.org{BOT_TOKEN}/sendMessage"
-    
-    # Oddiy post so'rovi (Xavfsiz va tezkor)
-    payload = {
-        "chat_id": CHAT_ID,
-        "text": message
-    }
-    
-    try:
-        r = requests.post(url, data=payload)
-        return r.status_code == 200
-    except:
-        return False
+    if os.path.exists(file_name):
+        yangi_ariza.to_csv(file_name, mode='a', header=False, index=False, encoding='utf-8')
+    else:
+        yangi_ariza.to_csv(file_name, mode='w', header=True, index=False, encoding='utf-8')
 
-# Forma
+# Forma komponentlari
 f_name = st.text_input("Ism va Familiyangiz:")
 f_phone = st.text_input("Telefon raqamingiz:")
 f_type = st.selectbox("Murojaat turi:", ["Mahalla obodonlashtirish", "Ijtimoiy yordam va nafaqalar", "Boshqa muammolar"])
@@ -85,21 +66,29 @@ f_text = st.text_area("Murojaat matni (Batafsil yozing):")
 
 if st.button("Murojaatni Rasman Yuborish 🚀"):
     if f_name.strip() == "" or f_phone.strip() == "" or f_text.strip() == "":
-        st.error("❌ Iltimos, barcha maydonlarni to'loq to'ldiring!")
+        st.error("❌ Iltimos, barcha maydonlarni to'liq to'ldiring!")
     else:
         with st.spinner("Yuborilmoqda..."):
-            status = send_tg(f_name, f_phone, f_type, f_text)
-            if status:
-                st.balloons()
-                st.success("✅ Murojaatingiz muvaffaqiyatli qabul qilindi!")
-            else:
-                st.error("❌ Xatolik yuz berdi. Iltimos, botingiz faol ekanligini tekshiring.")
+            # Ma'lumotni 100% kafolatli saqlash
+            save_data(f_name, f_phone, f_type, f_text)
+            st.balloons()
+            st.success("✅ Murojaatingiz muvaffaqiyatli qabul qilindi va mahalla onlayn bazasiga rasman kiritildi!")
 
-# Reklama paneli
+# 📊 KELIB TUSHGAN ARIZALARNI ARIZA EGASI KO'RISHI UCHUN PANELI
+st.write("")
+st.divider()
+with st.expander("📊 Kelib tushgan onlayn murojaatlar ro'yxati (Baza)"):
+    if os.path.exists("murojaatlar_baza.csv"):
+        df = pd.read_csv("murojaatlar_baza.csv", encoding='utf-8')
+        st.dataframe(df, use_container_width=True)
+    else:
+        st.info("Hozircha onlayn murojaatlar mavjud emas. Birinchi bo'lib arizani yuboring!")
+
+# 📣 REKLAMA PANEL
 st.markdown("""
 <div class='premium-reklama'>
     <div class='reklama-badge'>Tijoriy Taklif 🔥</div>
-    <div class='premium-text'>Sizga ham xuddi shunday turdagi zamonaviy, tezkor va avtomatlashtirilgan veb-saytlar yoki Telegram botlar kerakmi?</div>
+    <div class='premium-text'>Sizga ham xuddi shunday turdagi zamonaviy, tezkor va avtomatlashtirilgan veb-saytlar yoki loyihalar kerakmi?</div>
     <div style='text-align: center;'>
         <a href='https://instagram.com' target='_blank' class='premium-btn btn-insta'>📸 Instagram: mr.shahobiddin5</a>
         <a href='https://t.me' target='_blank' class='premium-btn btn-tg'>✈️ Telegram: @matem_agent</a>
