@@ -6,7 +6,8 @@ from datetime import datetime
 
 # Telegram bot sozlamalari (O'zingizning botingiz ma'lumotlari)
 TELEGRAM_BOT_TOKEN = "8850573618:AAFHnfum5nKAEUL-JPvcQX7Emp_raHKj-K0"
-TELEGRAM_CHAT_ID = "6937805047"
+TELEGRAM_CHAT_ID = "-1004373849569"
+
 
 # Sahifa sozlamalari - Milliy zamonaviy dizayn
 st.set_page_config(page_title="Raqamli Mahalla - Murojaatlar Tizimi", page_icon="🏛️", layout="centered")
